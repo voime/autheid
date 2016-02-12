@@ -1,0 +1,7 @@
+base   autheid
+author Arvi Võime
+email  avoime@gmail.com
+date   2016-00-15
+name   EID login
+desc   Provides user authentication using Estonian ID card
+url    https://github.com/voime/dokuwiki-autheid

@@ -1,0 +1,6 @@
+Order allow,deny
+Allow from all
+
+SSLVerifyClient require
+SSLVerifyDepth 2
+SSLOptions +StdEnvVars +ExportCertData
