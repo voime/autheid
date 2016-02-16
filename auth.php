@@ -53,23 +53,34 @@ class auth_plugin_autheid extends auth_plugin_authplain {
 	    }
 
 	    // ID CARD VALIDATION
-	    if($username=='eid'){
-    		if(isset($_SESSION['SSL_CLIENT_CERT']) && $_SESSION['SSL_CLIENT_CERT']){
+	    // if($username=='eid'){
+    	// 	if(isset($_SESSION['SSL_CLIENT_CERT']) && $_SESSION['SSL_CLIENT_CERT']){
+        //
+    	// 		// TODO
+        //         // vaja kätte saada isikukood
+        //
+    	// 		if($serialNumber){
+    	// 			$userdata = $this->findUserBySerialnumber($serialNumber);
+    	// 			if(!$userdata){
+    	// 				msg('Did not find user with isikukood: '.$serialNumber, -1);
+    	// 			}
+    	// 		}
+    	// 	}else{
+    	// 		msg('ID card was not found', -1);
+    	// 		return false;
+    	// 	}
+	    // }
 
-    			// TODO
-                // vaja kätte saada isikukood
+        // id login
 
-    			if($serialNumber){
-    				$userdata = $this->findUserBySerialnumber($serialNumber);
-    				if(!$userdata){
-    					msg('Did not find user with isikukood: '.$serialNumber, -1);
-    				}
-    			}
-    		}else{
-    			msg('ID card was not found', -1);
-    			return false;
-    		}
-	    }
+        if ($username == 'eid' and $password == 'eid' and isset($_POST["hash"])){
+            $calculated_hash=$_POST["SN"].$_POST["GN"].$_POST["serialNumber"].$_POST["timestamp"].$this->getConf('secret');
+            if ($_POST["hash"]==hash("sha256",$calculated_hash)) {
+                $userdata = $this->findUserBySerialnumber($_POST["serialNumber"]);
+            }else{
+                msg('Wrong hash');
+            }
+        }
 
         // USERNAME AND PASSWORD VALIDATION
         if(!$userdata && $username && $password && $username!='eid' && $this->getConf('username_login')!=0){
@@ -77,10 +88,10 @@ class auth_plugin_autheid extends auth_plugin_authplain {
           // find user by username and password
           $userdata  = $this->findUserByUsernameAndPassword($username, $password);
         }
-
+        //msg(json_encode($userdata));
 	    // LOG IN
 	    if($userdata){
-		    $username = $userdata['username'];
+            $username = $userdata['username'];
 		    $password = md5($userdata['pass']);
 		    $_SESSION['eid_userdata'] = $userdata;
 		    session_write_close();
@@ -97,13 +108,15 @@ class auth_plugin_autheid extends auth_plugin_authplain {
      * Finds user by SerialNumber (isikukood)
      *
      */
-    public function findUserBySerialNumber($code){
+    public function findUserBySerialNumber($username){
 
-        // validate code
+        // TODO validate username (11 int length)
 
-        $userdata = $this->getUserData($code);
-        $userdata['username'] = $username;
-
+        $userdata = $this->getUserData($username);
+        if ($userdata){
+	        $userdata['username'] = $username;
+            msg('You have logged in with ID card');
+        }
         return $userdata;
 
     }
@@ -117,8 +130,11 @@ class auth_plugin_autheid extends auth_plugin_authplain {
 	    $password = preg_replace('/[^\w\d\.-_]/', '', $password);
 
 	    $userdata = $this->getUserData($username);
-	    $userdata['username'] = $username;
-	    return $userdata;
+        if ($userdata){
+	        $userdata['username'] = $username;
+            msg('You have logged in with username and password');
+        }
+        return $userdata;
     }
 
     /**

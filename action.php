@@ -14,12 +14,14 @@ class action_plugin_autheid extends DokuWiki_Action_Plugin {
      */
     function hook_html_loginform_output(&$event, $param) {
 
-        $url = DOKU_URL . '/lib/plugins/autheid/auth/';
+        //$url = DOKU_URL . '/lib/plugins/autheid/auth/';
+        //$url = 'https://jkoolitus.eu/eid/?id=arvi';
+        $url = $this->getConf('login_url');
 
         ?>
             <h3>ID kaardiga sisselogimine</h3>
             <p>
-                <a href="<?php echo $url; ?>">Login</a>
+                <a href="<?php echo $url; ?>"><img src="<?php echo DOKU_URL . '/lib/plugins/autheid/images/idkaart.gif'; ?>"></img></a>
             </p>
 
         <?php
