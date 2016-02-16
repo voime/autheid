@@ -17,6 +17,21 @@ In addition to all the other SSL directives (SSLCertificateFile, SSLCertificateK
     SSLOptions +StdEnvVars +ExportCertData
 ```
 # Installation
+Seadista teenus
+conf.php
+array(
+    'cliendi_nimi' => array(
+    		'name' => 'Arvi Wiki',
+    		'secret' => 'saladus',
+    		'return' => 'http://voime.eu/doku.php?u=eid&p=eid&id=start',
+    		'from' => 'voime.eu'
+    	)
+)
+
+Installi plugin ja seadista autheid all.
+Ühine saladus secret
+URL kus audentimisteenus töötab
+Seejärel vali autentimisviisiks autheid
 
 ## Automatically
 

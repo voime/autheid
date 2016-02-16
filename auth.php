@@ -130,11 +130,16 @@ class auth_plugin_autheid extends auth_plugin_authplain {
 	    $password = preg_replace('/[^\w\d\.-_]/', '', $password);
 
 	    $userdata = $this->getUserData($username);
+
         if ($userdata){
-	        $userdata['username'] = $username;
-            msg('You have logged in with username and password');
+            if (auth_verifyPassword($password, $userdata['pass'])){
+                   $userdata['username'] = $username;
+                   msg('You have logged in with username and password');
+                   return $userdata;
+            }
         }
-        return $userdata;
+
+        return false;
     }
 
     /**
