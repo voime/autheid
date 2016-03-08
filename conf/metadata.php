@@ -10,4 +10,4 @@
 $meta['username_login'] = array('onoff');
 $meta['secret'] = array('string');
 $meta['login_url'] = array('string');
-$meta['expire'] = array('integer');
+$meta['expire'] = array('numericopt');

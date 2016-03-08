@@ -76,7 +76,7 @@ class auth_plugin_autheid extends auth_plugin_authplain {
         if ($username == 'eid' and $password == 'eid' and isset($_POST["hash"])){
             $calculated_hash=$_POST["SN"].$_POST["GN"].$_POST["serialNumber"].$_POST["timestamp"].$this->getConf('secret');
             if ($_POST["hash"]==hash("sha256",$calculated_hash)) {
-                if (isset($this->getConf('expire') && $this->getConf('expire') > 0 )){
+                if ($this->getConf('expire') > 0 ){
                     if (($_POST["timestamp"] + $this->getConf('expire')) > time()){
                         $userdata = $this->findUserBySerialnumber($_POST["serialNumber"]);
                     }else{
